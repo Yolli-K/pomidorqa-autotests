@@ -23,6 +23,10 @@ export default defineConfig({
     {
       name: "e2e",
       testDir: "./tests/e2e",
+      // Живой стенд из CI-раннера отвечает медленнее, чем локально: 30с на тест
+      // впритык для тяжёлых booking-сценариев. Запас на латентность сети,
+      // проверки не ослабляем: retries и ожидания остаются прежними.
+      timeout: 60_000,
       use: {
         ...devices["Desktop Chrome"],
         baseURL: process.env.POMIDORQA_BASE_URL ?? "https://aiqa.su",
