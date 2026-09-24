@@ -75,6 +75,10 @@ export class BookingPage {
     await this.lotsAddSubmit.click();
   }
 
+   async deleteFirstSlot() {
+    await this.slotsCard.first().getByRole("button", { name: "Удалить" }).click();
+  }
+
    async searchBySkill(skill: string) {
     await this.catalogFilterInput.fill(skill);
     await this.catalogFilterSubmit.click();
