@@ -74,9 +74,25 @@ export async function deleteUserViaApi(request: APIRequestContext): Promise<void
 }
 
 // Очистка нескольких контекстов: удалить аккаунт и закрыть контекст.
+// Отказоустойчиво: неудача одного DELETE (например, 401 при сбое сессии)
+// не прерывает очистку остальных контекстов, а ошибка очистки пишется в лог
+// и не маскирует настоящую причину падения теста.
 export async function cleanupUsersViaApi(contexts: BrowserContext[]): Promise<void> {
+  const errors: unknown[] = [];
+
   for (const context of contexts) {
-    await deleteUserViaApi(context.request);
+    try {
+      await deleteUserViaApi(context.request);
+    } catch (error) {
+      errors.push(error);
+    }
     await context.close();
+  }
+
+  if (errors.length > 0) {
+    console.error(
+      `Очистка не удалась для ${errors.length} из ${contexts.length} контекстов:`,
+      errors,
+    );
   }
 }

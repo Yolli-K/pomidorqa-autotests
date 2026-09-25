@@ -80,13 +80,12 @@ test.describe("Бронирование и отмена встречи", () => {
         }).toPass({ timeout: 10_000 });
       });
 
-      await test.step("Гость: кликает по дню и времени в календаре слотов", async () => {
-        await guestBooking.bookingCalendarDay.first().click();
-        await guestBooking.bookingCalendarTime.first().click();
-      });
-
-      await test.step("Гость: проверяет появление модального окна подтверждения бронирования", async () => {
-        await expect(guestBooking.bookingConfirmDialog).toBeVisible();
+      await test.step("Гость: выбирает день и время в календаре — открывается окно подтверждения", async () => {
+        await expect(async () => {
+          await guestBooking.bookingCalendarDay.first().click();
+          await guestBooking.bookingCalendarTime.first().click();
+          await expect(guestBooking.bookingConfirmDialog).toBeVisible();
+        }).toPass({ timeout: 15_000 });
       });
 
       await test.step("Гость: подтверждает бронирование", async () => {

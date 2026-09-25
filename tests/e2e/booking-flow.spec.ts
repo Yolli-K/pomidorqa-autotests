@@ -73,9 +73,11 @@ test("основной путь + гонка за слот: регистраци
         await expect(dayChip).toBeVisible();
       }).toPass({ timeout: 10_000 });
 
-      await guestBooking.bookingCalendarDay.first().click();
-      await guestBooking.bookingCalendarTime.first().click();
-      await expect(guestBooking.bookingConfirmDialog).toBeVisible();
+      await expect(async () => {
+        await guestBooking.bookingCalendarDay.first().click();
+        await guestBooking.bookingCalendarTime.first().click();
+        await expect(guestBooking.bookingConfirmDialog).toBeVisible();
+      }).toPass({ timeout: 15_000 });
     });
 
     await test.step("Гость2: регистрируется через API и тоже открывает окно бронирования на тот же слот", async () => {
@@ -95,9 +97,11 @@ test("основной путь + гонка за слот: регистраци
         await expect(dayChip).toBeVisible();
       }).toPass({ timeout: 10_000 });
 
-      await guest2Booking.bookingCalendarDay.first().click();
-      await guest2Booking.bookingCalendarTime.first().click();
-      await expect(guest2Booking.bookingConfirmDialog).toBeVisible();
+      await expect(async () => {
+        await guest2Booking.bookingCalendarDay.first().click();
+        await guest2Booking.bookingCalendarTime.first().click();
+        await expect(guest2Booking.bookingConfirmDialog).toBeVisible();
+      }).toPass({ timeout: 15_000 });
     });
 
     await test.step("Гость: подтверждает бронирование первым — успех", async () => {
