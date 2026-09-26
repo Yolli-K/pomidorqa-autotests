@@ -52,7 +52,11 @@ jobs:
         # Для учебного CI достаточно Chromium; `--with-deps` добавляет нужные библиотеки Linux.
         run: npx playwright install --with-deps chromium
 
-      # Сначала запускаем быструю статическую проверку кода.
+      # Сначала проверяем типы TypeScript — статика дешевле браузера.
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Затем правила стабильности тестов из eslint.config.mjs.
       - name: Lint tests
         # Используем тот же npm-скрипт, который разработчик запускает локально.
         run: npm run lint
